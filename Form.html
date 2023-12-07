@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
+      color: #333;
+    }
+
+    .container {
+      width: 80%;
+      margin: auto;
+      overflow: hidden;
+    }
+
+    header {
+      background: #50b3a2;
+      color: white;
+      padding-top: 30px;
+      min-height: 70px;
+      border-bottom: #e8491d 3px solid;
+    }
+
+    header a {
+      color: #ffffff;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-size: 16px;
+    }
+
+    header ul {
+      padding: 0;
+      list-style: none;
+      text-align: center;
+    }
+
+    header li {
+      display: inline;
+      margin: 0 20px;
+    }
+
+    header #branding {
+      float: left;
+    }
+
+    header #branding h1 {
+      margin: 0;
+    }
+
+    header nav {
+      float: right;
+      margin-top: 10px;
+    }
+
+    header .highlight, header .current a {
+      color: #e8491d;
+      font-weight: bold;
+    }
+
+    header a:hover {
+      color: #ffffff;
+      font-weight: bold;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 0.8em;
+      margin-top: 2px;
+    }
+
+    ol {
+      background: #fff;
+      padding: 20px;
+      border-left: 4px solid #e8491d;
+    }
+
+    ol li {
+      margin-bottom: 10px;
+      font-size: 1em;
+    }
+
+    .info-note {
+      font-size: 0.9em;
+      margin-top: 10px;
+      color: #555;
+      background: #d9edf7;
+      border-left: 10px solid #bce8f1;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+
+    input[type="submit"], input[type="button"] {
+      height: 40px;
+      background: #50b3a2;
+      color: #ffffff;
+      border: 0;
+      padding-left: 20px;
+      padding-right: 20px;
+      border-radius: 5px;
+    }
+
+    input[type="submit"]:hover, input[type="button"]:hover {
+      background: #333;
+      cursor: pointer;
+    }
+
+    footer {
+      padding: 20px;
+      margin-top: 20px;
+      color: #ffffff;
+      background-color: #333;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div id="branding">
+        <h1>Automated Guest List Form Submission</h1>
+      </div>
+      <nav>
+        <ul>
+          <!-- <li class="current"><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li> -->
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <div class="container">
+    <div>
+      <h2>Google Form Instructions</h2>
+      <p>To integrate your data with our system, please follow these steps:</p>
+
+      <ol>
+        <li>Access our template Google Form: <a href="https://docs.google.com/forms/d/1JkpsS-haJC01JPkdmklfF6XjYGIPs1vdZt97mc_GgHs/edit" target="_blank">Template Form</a>.</li>
+        <li>Make a copy of the form in your Google account by clicking on the three dots in the upper right corner and selecting "Make a copy."</li>
+        <li>Link the form to a new Google Sheet by selecting the responses tab, clicking on the Google Sheets icon, and choosing "Create a new spreadsheet".</li>
+        <li>Copy the URL of the newly created Google Sheet.</li>
+        <li>Return to this page and paste the copied URL in the "New Google Sheet URL" field above.</li>
+        <li>Share the spreadsheet with <code>amiller06880@gmail.com</code> for editing access. To do this, open the spreadsheet, click on the "Share" button, enter the email address, and select "Editor" from the dropdown.</li>
+        <li>Regularly update your copied Google Form with the latest events for the Big Night. Ensure that the event names in the form match exactly with those in the Big Night form. This includes adding new events and removing old ones. Correct and consistent event naming is crucial for the automation to function correctly.</li>
+      </ol>
+
+      <p><strong>Note:</strong> We understand the importance of your privacy. Be assured that your data will not be shared and will only be used to automate the processing of form data.</p>
+
+    </div>
+    <form id="userForm" method="post" action="<?= url ?>">
+      <div>
+        <label for="sheetUrl">Your Google Sheet URL:</label>
+        <input type="url" id="sheetUrl" name="sheetUrl" placeholder="Enter Sheet URL" required>
+        <p>Please enter a Google Sheets URL in the format: https://docs.google.com/spreadsheets/d/[SpreadsheetID]/edit#gid=[SheetID]</p>
+        <p id="sheetUrlError" class="error-message"></p>
+      </div>
+      <div>
+        <label for="userEmail">Your Email:</label>
+        <input type="email" id="userEmail" name="userEmail" placeholder="Enter Email" required>
+        <p>Please enter a valid email address (example@example.com).</p>
+        <p id="userEmailError" class="error-message"></p>
+      </div>
+      <div>
+        <label for="userName">Your Name (Format: Firstname Lastname):</label>
+        <input type="text" id="userName" name="userName" placeholder="Enter Name" required>
+        <p>Please enter your name as it appears in the Big Night Form (Firstname Lastname).</p>
+        <p id="userNameError" class="error-message"></p>
+      </div>
+      <div>
+        <input type="submit" value="Activate Guest List Submission Automation" onclick="return validateForm();">
+        <p class="info-note">
+          By clicking "Activate Guest List Submission Automation", you enable an automatic check of your Google Sheet every 30 minutes for new form submissions. Any new responses found will be automatically submitted to the Big Night form. Additionally, you'll receive an email notification about these new entries. This ensures that your data is always up-to-date and you are promptly informed of new submissions.
+        </p>
+      </div>
+      <div>
+        <input type="button" value="Delete Data" id="deleteButton">
+        <p id="deleteError" class="error-message"></p>
+        <p class="info-note">
+          Clicking "Delete Data" will remove your information from our system. Use this if you wish to discontinue the automatic data submission process.
+        </p>
+      </div>
+    </form>
+    <script>
+
+      document.getElementById('deleteButton').addEventListener('click', function() {
+        var userEmail = document.getElementById('userEmail').value;
+        var deleteError = document.getElementById('deleteError');
+
+        if (!/\S+@\S+\.\S+/.test(userEmail)) {
+          deleteError.textContent = 'Please enter a valid email address.';
+          return;
+        }
+
+        var emailExists = checkEmailExists(userEmail);
+        if (emailExists) {
+          deleteAmbassadorByEmail(userEmail);
+          deleteError.textContent = 'Your data has been successfully removed.';
+        } else {
+          deleteError.textContent = 'Email not found in the system.';
+        }
+      });
+
+      function checkEmailExists(email) {
+        var sheet = getSpreadsheet().getActiveSheet();
+        var data = sheet.getRange("A2:C" + sheet.getLastRow()).getValues(); // Adjust the range if needed
+
+        for (var i = 0; i < data.length; i++) {
+          if (data[i][1] === email) { // Assuming email is in the second column
+            return true;
+          }
+        }
+        return false;
+      }
+
+      function validateForm() {
+        var userName = document.getElementById('userName').value;
+        var userEmail = document.getElementById('userEmail').value;
+        var sheetUrl = document.getElementById('sheetUrl').value;
+
+        var userNameError = document.getElementById('userNameError');
+        var userEmailError = document.getElementById('userEmailError');
+        var sheetUrlError = document.getElementById('sheetUrlError');
+
+        var isValid = true;
+
+        // Validate name format
+        if (!/^[A-Za-z]+ [A-Za-z]+$/.test(userName)) {
+          userNameError.textContent = "Name must be in the format: Firstname Lastname";
+          isValid = false;
+        } else {
+          userNameError.textContent = '';
+        }
+
+        // Validate email format
+        if (!/\S+@\S+\.\S+/.test(userEmail)) {
+          userEmailError.textContent = "Please enter a valid email address.";
+          isValid = false;
+        } else {
+          userEmailError.textContent = '';
+        }
+
+        // Validate Google Sheets URL
+        if (!/^https:\/\/docs\.google\.com\/spreadsheets\/d\/[a-zA-Z0-9-_]+\/edit#gid=\d+$/.test(sheetUrl)) {
+          sheetUrlError.textContent = "Please enter a valid Google Sheets URL.";
+          isValid = false;
+        } else {
+          sheetUrlError.textContent = '';
+        }
+
+        return isValid;
+      }
+    </script>
+  </div>
+  <footer>
+    <p>Automated Guest List Form Submission &copy; 2023</p>
+  </footer>
+</body>
+</html>
