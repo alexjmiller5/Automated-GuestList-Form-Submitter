@@ -17,3 +17,4 @@ Features to add:
 - [x] Add the project to GitHub integration
 - [ ] Figure out if it's possible to change the domain
 - [ ] Add the clasp and GitHub integrations and make scripts for this and put them into GitHub
+- [ ] Add instructions for how to use and setup clasp commands to this readme
