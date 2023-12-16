@@ -18,3 +18,8 @@ Features to add:
 - [ ] Figure out if it's possible to change the domain
 - [ ] Add the clasp and GitHub integrations and make scripts for this and put them into GitHub
 - [ ] Add instructions for how to use and setup clasp commands to this readme
+- [ ] Launch Ross’s web app in a domain to look more serious
+- [ ] Think about guest list submitter modification for missing seconds of execution
+- [ ] Add the minutes variable of the guest list submitter to the email
+- [ ] Make an error catch in case permission isn’t given to my email
+- [ ] Make sure not to submit duplicate submissions for Ross’s app??
